@@ -5,12 +5,19 @@ import {
   getHelloHandler,
   getHelloJsonHandler,
 } from './inbound/http-handlers/hello-world';
+import { Logger } from './common/logger';
+import { registerGetRoute } from './inbound/http-handlers';
 
-export function bootstrap(app: Express): void {
+export function bootstrap(app: Express, logger: Logger): void {
   // initialize services
   const helloService: HelloWorldService = new HelloWorldService();
 
   // initialize http routes
-  app.get('/hello', getHelloHandler(helloService));
-  app.get('/hello/json', getHelloJsonHandler(helloService));
+  registerGetRoute('/hello', getHelloHandler(helloService), app, logger);
+  registerGetRoute(
+    '/hello/json',
+    getHelloJsonHandler(helloService),
+    app,
+    logger,
+  );
 }
