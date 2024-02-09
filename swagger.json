@@ -1,9 +1,13 @@
 {
   "swagger": "2.0",
+  "schemes": ["http"],
   "paths": {
-    "/hello": {
+    "/api/v1/hello": {
       "get": {
-        "description": "Returns 'Hello World!' in plain text",
+        "tags": ["hello"],
+        "summary": "Returns 'Hello World!' in plain text",
+        "description": "Returns a simple 'Hello World!' in plain text, no parameters, body or headers required",
+        "operationId": "getHello",
         "produces": ["text/plain"],
         "responses": {
           "200": {
@@ -19,6 +23,6 @@
   "info": {
     "title": "ExpressTSTest",
     "description": "This is a test application to check out ExpressJS with Typescript. It is also used to try out a bunch of stuff regarding project architecture / code structuration.",
-    "version": "1.0.0"
+    "version": "0.0.1"
   }
 }
