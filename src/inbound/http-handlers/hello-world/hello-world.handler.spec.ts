@@ -1,19 +1,25 @@
 import { HelloWorldService } from '../../../core/hello-world/services';
 import { createMock, DeepMocked } from '@golevelup/ts-jest';
-import express from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { getHelloHandler, getHelloJsonHandler } from './hello-world.handler';
 import { Hello } from '../../../core/hello-world/interfaces';
 
 describe('HelloWorldHttpHandlers', () => {
-  let helloWorldHandler: (req: express.Request, res: express.Response) => void;
+  let helloWorldHandler: (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => void;
   let helloWorldService: DeepMocked<HelloWorldService>;
-  let req: DeepMocked<express.Request>;
-  let res: DeepMocked<express.Response>;
+  let req: DeepMocked<Request>;
+  let res: DeepMocked<Response>;
+  let next: NextFunction;
 
   beforeEach(() => {
     helloWorldService = createMock<HelloWorldService>();
-    req = createMock<express.Request>();
-    res = createMock<express.Response>();
+    req = createMock<Request>();
+    res = createMock<Response>();
+    next = () => {};
   });
 
   // --------------------------------
@@ -27,7 +33,7 @@ describe('HelloWorldHttpHandlers', () => {
     it('Should work', () => {
       const usedString: string = 'hi :D';
       helloWorldService.getHello.mockReturnValue(usedString);
-      helloWorldHandler(req, res);
+      helloWorldHandler(req, res, next);
 
       expect(helloWorldService.getHello).toHaveBeenCalledTimes(1);
       expect(res.send).toHaveBeenCalledTimes(1);
@@ -47,7 +53,7 @@ describe('HelloWorldHttpHandlers', () => {
         hello: 'hi :D',
       };
       helloWorldService.getHelloInterface.mockReturnValue(usedInterface);
-      helloWorldHandler(req, res);
+      helloWorldHandler(req, res, next);
 
       expect(helloWorldService.getHelloInterface).toHaveBeenCalledTimes(1);
       expect(res.send).toHaveBeenCalledTimes(1);

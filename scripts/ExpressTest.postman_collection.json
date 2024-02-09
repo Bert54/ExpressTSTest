@@ -1,0 +1,51 @@
+{
+	"info": {
+		"_postman_id": "9b99652a-b8ab-4af1-87f9-af4062d0b5df",
+		"name": "ExpressTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32316535"
+	},
+	"item": [
+		{
+			"name": "Get Hello (Text)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/v1/hello",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"hello"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Hello (JSON)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/v1/hello/json",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"hello",
+						"json"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

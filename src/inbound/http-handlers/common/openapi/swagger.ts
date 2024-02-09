@@ -2,7 +2,6 @@ import { Express } from 'express';
 import swaggerUi from 'swagger-ui-express';
 
 import { Logger } from '../../../../common/logger';
-
 import * as swaggerDocument from '../../../../../swagger.json';
 
 export function bootstrapOpenAPIDocumentation(app: Express, logger: Logger) {

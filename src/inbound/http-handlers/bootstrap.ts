@@ -4,6 +4,7 @@ import { Logger } from '../../common/logger';
 import { ServicesHolder } from '../interfaces';
 import { getHelloHandler, getHelloJsonHandler } from './hello-world';
 import { bootstrapOpenAPIDocumentation } from './common/openapi';
+import { getErrorHandler, getRouteNotFoundHandler } from './common/errors';
 
 export function bootstrap(
   app: Express,
@@ -14,6 +15,10 @@ export function bootstrap(
 
   // setup openapi documentation
   bootstrapOpenAPIDocumentation(app, logger);
+
+  // setup global error handler (must be last)
+  app.all('*', getRouteNotFoundHandler());
+  app.use(getErrorHandler());
 }
 
 function bootstrapV1App(
