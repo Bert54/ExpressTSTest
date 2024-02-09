@@ -1,12 +1,17 @@
 {
   "swagger": "2.0",
   "schemes": ["http"],
+  "info": {
+    "title": "ExpressTSTest",
+    "description": "This is a test application to check out ExpressJS with Typescript. It is also used to try out a bunch of stuff regarding project architecture / code structuration.",
+    "version": "0.0.1"
+  },
   "paths": {
     "/api/v1/hello": {
       "get": {
         "tags": ["hello"],
         "summary": "Returns 'Hello World!' in plain text",
-        "description": "Returns a simple 'Hello World!' in plain text, no parameters, body or headers required",
+        "description": "Returns a simple 'Hello World!' in plain text. No parameters, body or headers required",
         "operationId": "getHello",
         "produces": ["text/plain"],
         "responses": {
@@ -18,11 +23,34 @@
           }
         }
       }
+    },
+    "/api/v1/hello/json": {
+      "get": {
+        "tags": ["hello"],
+        "summary": "Returns 'Hello World!' in a json object",
+        "description": "Returns a simple 'Hello World!' in a json object. No parameters, body or headers required",
+        "operationId": "getHello",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "'Hello World!",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/HelloObject"
+            }
+          }
+        }
+      }
     }
   },
-  "info": {
-    "title": "ExpressTSTest",
-    "description": "This is a test application to check out ExpressJS with Typescript. It is also used to try out a bunch of stuff regarding project architecture / code structuration.",
-    "version": "0.0.1"
+  "definitions": {
+    "HelloObject": {
+      "type": "object",
+      "properties": {
+        "hello": {
+          "type": "string"
+        }
+      }
+    }
   }
 }
