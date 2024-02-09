@@ -1,25 +1,22 @@
-import { HelloWorldService } from '../../../core/hello-world/services';
 import { createMock, DeepMocked } from '@golevelup/ts-jest';
-import { Request, Response, NextFunction } from 'express';
+
+import httpMocks, { MockRequest, MockResponse } from 'node-mocks-http';
+import { Request, Response } from 'express';
+
 import { getHelloHandler, getHelloJsonHandler } from './hello-world.handler';
 import { Hello } from '../../../core/hello-world/interfaces';
+import { HelloWorldService } from '../../../core/hello-world/services';
 
 describe('HelloWorldHttpHandlers', () => {
-  let helloWorldHandler: (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => void;
+  let helloWorldHandler: (req: Request, res: Response) => void;
   let helloWorldService: DeepMocked<HelloWorldService>;
-  let req: DeepMocked<Request>;
-  let res: DeepMocked<Response>;
-  let next: NextFunction;
+  let req: MockRequest<Request>;
+  let res: MockResponse<Response>;
 
   beforeEach(() => {
     helloWorldService = createMock<HelloWorldService>();
-    req = createMock<Request>();
-    res = createMock<Response>();
-    next = () => {};
+    req = httpMocks.createRequest();
+    res = httpMocks.createResponse();
   });
 
   // --------------------------------
@@ -31,12 +28,14 @@ describe('HelloWorldHttpHandlers', () => {
     });
 
     it('Should work', () => {
-      const usedString: string = 'hi :D';
-      helloWorldService.getHello.mockReturnValue(usedString);
-      helloWorldHandler(req, res, next);
+      const expected: string = 'hi :D';
+      helloWorldService.getHello.mockReturnValue(expected);
 
+      helloWorldHandler(req, res);
+      const gotten: string = res._getData() as string;
+
+      expect(gotten).toStrictEqual(expected);
       expect(helloWorldService.getHello).toHaveBeenCalledTimes(1);
-      expect(res.send).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -49,14 +48,16 @@ describe('HelloWorldHttpHandlers', () => {
     });
 
     it('Should work', () => {
-      const usedInterface: Hello = {
+      const expected: Hello = {
         hello: 'hi :D',
       };
-      helloWorldService.getHelloInterface.mockReturnValue(usedInterface);
-      helloWorldHandler(req, res, next);
+      helloWorldService.getHelloInterface.mockReturnValue(expected);
 
+      helloWorldHandler(req, res);
+      const gotten: Hello = res._getData() as Hello;
+
+      expect(gotten).toStrictEqual(expected);
       expect(helloWorldService.getHelloInterface).toHaveBeenCalledTimes(1);
-      expect(res.send).toHaveBeenCalledTimes(1);
     });
   });
 });

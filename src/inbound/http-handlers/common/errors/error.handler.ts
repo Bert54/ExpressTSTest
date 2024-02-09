@@ -3,32 +3,28 @@ import { NotFound } from 'http-errors';
 
 import { ErrorObject } from './interfaces';
 
-enum ErrorStatus {
+export enum ErrorStatus {
   NOT_FOUND = 'NOT_FOUND',
   INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
 }
 
-export function getRouteNotFoundHandler() {
+export function routeNotFoundHandler(req: express.Request): never {
   // just throw an error here to let the error handler do the work
-  return (req: express.Request): void => {
-    throw new NotFound(`'(${req.method}) ${req.path}' was not found`);
-  };
+  throw new NotFound(`'(${req.method}) ${req.path}' was not found`);
 }
 
-export function getErrorHandler() {
-  return (
-    err: Error,
-    _: express.Request,
-    res: express.Response,
-    next: express.NextFunction,
-  ): void => {
-    const handledError: ErrorObject = handleError(err);
-    res.status(handledError.code).send(handledError);
-    next();
-  };
+export function errorHandler(
+  err: Error,
+  _: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+): void {
+  const handledError: ErrorObject = handleError(err);
+  res.status(handledError.code).send(handledError);
+  next();
 }
 
-function handleError(error: Error): ErrorObject {
+export function handleError(error: Error): ErrorObject {
   if (error instanceof NotFound) {
     return newNotFoundError(error);
   }
