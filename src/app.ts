@@ -2,6 +2,7 @@ import express, { Express } from 'express';
 
 import { bootstrap } from './boostrap';
 import { Logger, newLoggerMiddleware } from './common/logger';
+import { boostrapOpenAPIDocumentation } from './common/openapi';
 
 const app: Express = express();
 const port: number = 3000;
@@ -14,6 +15,9 @@ app.use(newLoggerMiddleware(logger));
 
 // setup app and dependencies
 bootstrap(app, logger);
+
+// setup openapi documentation
+boostrapOpenAPIDocumentation(app, logger);
 
 // start the server
 app.listen(port, () => {
