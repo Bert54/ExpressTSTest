@@ -4,6 +4,7 @@ import { HelloWorldService } from './core/hello-world/services';
 import { Logger } from './common/logger';
 import { bootstrap as bootstrapHttpHandlers } from './inbound/http-handlers';
 import { ConfigService } from './common/config';
+import { SQLDatabase } from './outbound/database/sql';
 
 export function bootstrap(
   app: Express,
@@ -12,6 +13,9 @@ export function bootstrap(
 ): void {
   // initialize services
   const helloService: HelloWorldService = new HelloWorldService();
+
+  // initialize db
+  new SQLDatabase(config);
 
   // initialize http handlers
   bootstrapHttpHandlers(app, logger, {
