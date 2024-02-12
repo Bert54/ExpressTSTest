@@ -1,11 +1,22 @@
-import { ConfigService } from '../../../common/config';
-import { newSQLDatabase } from './knex';
+import Knex from 'knex';
+
+import { ConfigService, SqlDbConfig } from '../../../common/config';
 
 export class SQLDatabase {
   private db;
 
   constructor(config: ConfigService) {
-    this.db = newSQLDatabase(config);
+    const dbConfig: SqlDbConfig = config.getConfig<SqlDbConfig>('sql-database');
+    this.db = Knex({
+      client: dbConfig.client,
+      connection: {
+        host: dbConfig.host,
+        database: dbConfig.database,
+        user: dbConfig.username,
+        password: dbConfig.password,
+        port: dbConfig.port,
+      },
+    });
     // Test the connection to ensure it is working. This throws an error if that's not the case
     this.testConnection().then();
   }
